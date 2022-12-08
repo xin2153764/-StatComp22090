@@ -13,5 +13,5 @@ RoxygenNote: 7.2.2
 Encoding: UTF-8
 Suggests: Rcpp, knitr, rmarkdown, microbenchmark, ggplot2, boot, bootstrap, DAAG, alr4
 VignetteBuilder: knitr
-URL: http://github.com/xin2153764/StatComp22090
-BugReports: http://github.com/xin2153764/StatComp22090/issues
+URL: http://github.com/xin2153764/-StatComp22090
+BugReports: http://github.com/xin2153764/-StatComp22090/issues
