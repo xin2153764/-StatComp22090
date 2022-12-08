@@ -1,0 +1,17 @@
+Package: StatComp22090
+Type: Package
+Title: Final project
+Version: 1.0
+Date: 2022-12-08
+Author: Xinya Chen
+Maintainer: Xinya Chen <cxy0727@mail.ustc.edu.cn>
+Description: choosing variables functions and a simple Monte Carlo simulation to obtain properties of Model Averaging estimators using SAIC based on TSLS.
+License: GPL (>= 2)
+Imports: MASS
+LinkingTo: Rcpp
+RoxygenNote: 7.2.2
+Encoding: UTF-8
+Suggests: Rcpp, knitr, rmarkdown, microbenchmark, ggplot2, boot, bootstrap, DAAG, alr4
+VignetteBuilder: knitr
+URL: http://github.com/xin2153764/StatComp22090
+BugReports: http://github.com/xin2153764/StatComp22090/issues

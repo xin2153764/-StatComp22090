@@ -1,0 +1,195 @@
+---
+title: "introduction"
+author: "Xinya Chen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+ %\VignetteIndexEntry{homework}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+  This markdown file is the introduction of two functions in my package. The first one is choosing several variables from m variables for different submodels but just the first k of them must be in all submodels. The second one is performing a simple Monte Carlo simulation to assess the finite sample properties of the proposed model averaging estimator using Smoothed Akaike information criterion(SAIC) based on the two-stage least squares(TSLS) in the context of the linear instrumental variable regression model. 
+  
+  Meanwhile, the second function applies the first one to obtain the simulation results. The details are as follows.
+  
+  The linear IV regression model is specified by a structural equation of interest
+$$y=Y\beta+X\gamma+u$$
+where y is a T × 1 vector, Y is a T × 1 matrix of endogenous regressors, X is a T × K1 matrix of exogenous regressors, and by a reduced form equation for the endogenous Y
+$$Y=Z\Pi+X\Phi+V$$
+where Z is a T × K2 matrix of instruments, with Y, X and Z full ranked and K2 ≥ 1.
+
+Define the parameter of interest $\theta=\left(\beta^{\prime}, \gamma^{\prime}\right)^{\prime}$, $\pi=\left(\Phi^{\prime},\Pi^{\prime}\right)^{\prime}$
+and let $\overline{Z}=[X, Z]$ be a T × K matrix where $K =K_{1}+K_{2}$ and $\overline{X}=[Y, X]$ is $T$ × (1 + $K_{1}$).
+
+Below, we focus on the two-stage least squares (TSLS) estimation of the parameters in the homoscedastic case. The TSLS estimator of the parameter $\theta$ can be derived as
+
+$$\widehat{\theta}_{TSLS}=\left(\overline{X}^{\prime} \overline{Z}\left(\overline{Z}^{\prime} \overline{Z}\right)^{-1} \overline{Z}^{\prime} \overline{X}\right)^{-1}\left(\overline{X}^{\prime} \overline{Z}\left(\overline{Z}^{\prime} \overline{Z}\right)^{-1} \overline{Z}^{\prime} y\right).$$
+
+Above-mentioned $K_{2}$ instrumental variables and their different combinations can be reorganized into a new matrix of instrumental variables for the corresponding two-stage least squares estimation. To obtain an estimator of $\theta$ under different instrumental variable matrices, we can define a selection vector $c\in\mathcal{R}^K$ that represents a list of "selected" instruments. Defining the unit-simplex set
+
+$$C=\left\{c \in \mathcal{R}^K \backslash\{0\}: c_{j}=0 \mbox{or }1, \forall 1 \leq j \leq K,  c=\left(c_{1}, \ldots, c_{K}\right)^{\prime}\right\}$$
+
+Thus, quantities such as $Z_{c},\overline{Z}_{c},\widehat{\theta}_{c}$ are obtained after deleting the instruments j corresponding to $c_{j} = 0$. Now, we can represent two-stage least squares(TSLS) estimator under different combinations of instrumental variables
+$$\widehat{\theta}_{c}=\left(\overline{X}^{\prime} \overline{Z}_{c}\left(\overline{Z}_{c}^{\prime} \overline{Z}_{c}\right)^{-1} \overline{Z}_{c}^{\prime} \overline{X}\right)^{-1}\left(\overline{X}^{\prime} \overline{Z}_{c}\left(\overline{Z}_{c}^{\prime} \overline{Z}_{c}\right)^{-1} \overline{Z}_{c}^{\prime} y\right)$$
+
+with $\overline{Z_{c}}= [X, Z_{c}]$.
+
+A model averaging estimator of the unknown (1 + $K_{1}$) × 1 vector $\theta$ is
+
+$$\widehat{\theta}(\omega)=\sum_{c \in C} \omega_{c} \widehat{\theta}_{c}.$$
+
+In terms of weight selection, we consider Smoothed Akaike information criterion(SAIC) whose empirical weight is computed as
+$$\widehat{\omega}_{AIC,k}=\frac{\exp \left(-\frac{1}{2} AIC_{k}\right)}{\sum\limits_{j=1}^{K} \exp \left(-\frac{1}{2} AIC_{j}\right)}, \quad k=1,\ldots,K $$
+
+Moreover, in this context, we can express AIC as 
+$$2p+T\cdot log\left(\frac{\sum\limits_{i=1}^{T}\left(y_{i}-\widehat{\overline{X}}_{i} \widehat{\theta}_{c}\right)^{2}}{T}\right)$$
+where $T$ is the number of observed values, $p$ is the number of parameters in the candidate model.
+
+The first function is choosing several variables from m variables for different submodels but just the first k of them must be in all submodels.
+
+```{r}
+choose_variable <- function(k, m){
+  q <- m - k
+  M <- 2**q
+  pp <- numeric(q+1)
+  
+  for (i in 1:(q+1)){
+    pp[i] <- choose(q, i-1)
+  }
+  
+  s <- numeric(M)
+  s[1] <- k
+  
+  for (i in 2:(q+1)){
+    temp <- sum(s > 0)
+    s[(temp+1): (temp+pp[i])] <- rep((i+k-1), pp[i])
+  }
+  
+  S <- matrix(nrow = M, ncol = m)
+  
+  for (i in 1:M) {
+    S[i, 1:k] <- 1:k
+  }
+  
+  tS <- 1
+  
+  for (i in 1:q) {
+    Temp <- t(combn((k+1):m, i))
+    S[(tS+1):(tS+nrow(Temp)),(k+1): (k+i)] <- Temp
+    tS <- tS + nrow(Temp)
+  }
+  
+  output <- list(s=s, S=S)
+  return(output)
+}
+choose_variable(2,8)
+```
+
+The second function reports results of a simple Monte Carlo study assessing the finite sample properties of the proposed model averaging estimator using SAIC based on the two-stage least squares(TSLS).
+
+The data generating process is
+$$\left\{
+\begin{array}{lr}
+y_{i}=\beta_{0}Y_{i}+\varepsilon_{i}&\\
+Y_{i}=\pi^{\prime}Z_{i}+u_{i}+\eta_{i},
+\end{array}
+\right.$$
+where the true parameter of interest is the scalar $β_{0}$, which is fixed at 0.1. $Y_{i}$ and $X_{i}$ are scalars, with $X_{i}=v_{i}+\eta_{i}$, $v_{i}$ and $\eta_{i}$ being
+independently distributed N(0, 1) random variables.Furthermore,
+$$(\varepsilon_{i},u_{i},Z_{i}^{\prime})^{\prime}\overset{i.i.d}\sim N(0,\Sigma),\quad \mbox{where}\quad \Sigma=\left(
+\begin{array}{ccc}
+          1& 0.5& 0_{1 \times M } \\
+          0.5& 1& 0_{1 \times M } \\
+          0_{M \times 1}& 0_{M \times 1} & I_{M}
+\end{array}
+\right).$$
+
+We set the maximum number of instruments $M$ to 10 and 20 and allow for different combinations of instruments. We also fix a block of moment conditions ($M_{fixed}$).For each replication, we select the instruments for the fixed block that maximize the correlation with the endogenous regressor $Y_{i}$, while using all possible combinations of the remaining
+instruments.
+
+In terms of specifications for $\pi$, we have
+$$\pi_{j}=c(M)\left(1-\frac{j}{M+1}\right)^{4},\quad j=1,2,\ldots,M,$$
+where $c(M)$ is set so that $\pi$ satisfies $\pi^{\prime} \pi=R_{f}^{2}/\left(1-R_{f}^{2}\right)$, where$R_{f}^2=0.1$.
+
+G is the number of replications. T is the number of observations. For each replication, we can obtain a value for $\hat{\theta}$. Based on these estimated values, we compute the median bias (MB) and the median absolute deviation (MAD), as well as the inter-decile range (IDR,
+the difference between the 10% and 90% deciles), which are the results of the second function.
+
+```{r}
+library(MASS)
+set.seed(100)
+
+TSLS_SAIC <- function(G, T, M, Mfixed){
+  C <- 2**(M - Mfixed)
+  beta <- 0.1
+  Rf2 <- 0.1
+  pi <- numeric(M)
+  ehat <- matrix(0, T, C-1)
+  thetahatc <- numeric(C-1)
+  AICc <- numeric(C-1)
+  expc <- numeric(C-1)
+  thetahat <- numeric(G)
+  
+  s <- choose_variable(Mfixed,M)$s
+  S <- choose_variable(Mfixed,M)$S
+  
+  sumM <- 0
+  
+  for (i in 1:M) {
+    sumM <- sumM + (1-i/(M+1))**8
+  }
+  
+  cM <- (Rf2/(1-Rf2)/sumM)**0.5
+  
+  for (i in 1:M) {
+    pi[i] <- cM*(1-i/(M+1))**4
+  }
+  
+  for (g in 1:G) {
+    Ome <- matrix(c(1, 0.5, 0.5, 1), 2, 2)
+    mu <- c(0,0)
+    eu <- mvrnorm(T, mu, Ome)
+    e <- eu[,1]
+    u <- eu[,2]
+    veta <- mvrnorm(T, mu, diag(2))
+    v <- veta[,1]
+    eta <- veta[,2]
+    Z <- mvrnorm(T, numeric(M), diag(M))
+    X <- v + eta
+    Y <- Z %*% pi + u + eta
+    y <- beta * Y + e
+    batX <- Y
+    
+    for (c in 2:C) {
+      pc <- s[c]
+      a <- S[c, 1:pc]
+      Zc <- Z[, a]
+      PZc <- Zc %*% solve(t(Zc) %*% Zc) %*% t(Zc)
+      PZcX <- PZc %*% batX
+      thetahatc[c-1] <- solve(t(batX) %*% PZcX) %*% t(PZcX) %*% y
+      ehat[, c-1]<- y - PZcX %*% thetahatc[c-1]
+      RSSc <- t(ehat[, c-1]) %*% ehat[, c-1]
+      qc <- 2 + length(a)
+      AICc[c-1] <- 2 * qc + T * log(RSSc/T)
+      expc[c-1] <- exp(-AICc[(c-1)]/2)
+    }
+    
+    sumexp <- sum(expc)
+    omega <- exp(-AICc/2)/sumexp
+    thetahat[g] <- t(omega) %*% thetahatc
+  }
+  
+  MAD <- median(abs(thetahat-0.1))
+  MB <- median(thetahat-0.1)
+  IDR = sort(thetahat)[round(length(thetahat)*0.9)]-sort(thetahat)[round(length(thetahat)*0.1)]
+  
+  return(c(MAD,MB,IDR))
+}
+TSLS_SAIC(500, 100, 10, 2)
+```
+
+We also give an example of the function to assess the finite sample properties of the proposed model averaging estimator using Smoothed Akaike information criterion(SAIC) based on the two-stage least squares(TSLS). We can set different values of G, T, M, Mfixed to compare the results.

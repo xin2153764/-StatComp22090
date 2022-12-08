@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Xinya Chen" />
+
+<meta name="date" content="2022-12-08" />
+
+<title>introduction</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">introduction</h1>
+<h4 class="author">Xinya Chen</h4>
+<h4 class="date">2022-12-08</h4>
+
+
+
+<p>This markdown file is the introduction of two functions in my
+package. The first one is choosing several variables from m variables
+for different submodels but just the first k of them must be in all
+submodels. The second one is performing a simple Monte Carlo simulation
+to assess the finite sample properties of the proposed model averaging
+estimator using Smoothed Akaike information criterion(SAIC) based on the
+two-stage least squares(TSLS) in the context of the linear instrumental
+variable regression model.</p>
+<p>Meanwhile, the second function applies the first one to obtain the
+simulation results. The details are as follows.</p>
+<p>The linear IV regression model is specified by a structural equation
+of interest <span class="math display">\[y=Y\beta+X\gamma+u\]</span>
+where y is a T × 1 vector, Y is a T × 1 matrix of endogenous regressors,
+X is a T × K1 matrix of exogenous regressors, and by a reduced form
+equation for the endogenous Y <span class="math display">\[Y=Z\Pi+X\Phi+V\]</span> where Z is a T × K2
+matrix of instruments, with Y, X and Z full ranked and K2 ≥ 1.</p>
+<p>Define the parameter of interest <span class="math inline">\(\theta=\left(\beta^{\prime},
+\gamma^{\prime}\right)^{\prime}\)</span>, <span class="math inline">\(\pi=\left(\Phi^{\prime},\Pi^{\prime}\right)^{\prime}\)</span>
+and let <span class="math inline">\(\overline{Z}=[X, Z]\)</span> be a T
+× K matrix where <span class="math inline">\(K =K_{1}+K_{2}\)</span> and
+<span class="math inline">\(\overline{X}=[Y, X]\)</span> is <span class="math inline">\(T\)</span> × (1 + <span class="math inline">\(K_{1}\)</span>).</p>
+<p>Below, we focus on the two-stage least squares (TSLS) estimation of
+the parameters in the homoscedastic case. The TSLS estimator of the
+parameter <span class="math inline">\(\theta\)</span> can be derived
+as</p>
+<p><span class="math display">\[\widehat{\theta}_{TSLS}=\left(\overline{X}^{\prime}
+\overline{Z}\left(\overline{Z}^{\prime} \overline{Z}\right)^{-1}
+\overline{Z}^{\prime}
+\overline{X}\right)^{-1}\left(\overline{X}^{\prime}
+\overline{Z}\left(\overline{Z}^{\prime} \overline{Z}\right)^{-1}
+\overline{Z}^{\prime} y\right).\]</span></p>
+<p>Above-mentioned <span class="math inline">\(K_{2}\)</span>
+instrumental variables and their different combinations can be
+reorganized into a new matrix of instrumental variables for the
+corresponding two-stage least squares estimation. To obtain an estimator
+of <span class="math inline">\(\theta\)</span> under different
+instrumental variable matrices, we can define a selection vector <span class="math inline">\(c\in\mathcal{R}^K\)</span> that represents a list
+of “selected” instruments. Defining the unit-simplex set</p>
+<p><span class="math display">\[C=\left\{c \in \mathcal{R}^K
+\backslash\{0\}: c_{j}=0 \mbox{or }1, \forall 1 \leq j \leq
+K,  c=\left(c_{1}, \ldots, c_{K}\right)^{\prime}\right\}\]</span></p>
+<p>Thus, quantities such as <span class="math inline">\(Z_{c},\overline{Z}_{c},\widehat{\theta}_{c}\)</span>
+are obtained after deleting the instruments j corresponding to <span class="math inline">\(c_{j} = 0\)</span>. Now, we can represent
+two-stage least squares(TSLS) estimator under different combinations of
+instrumental variables <span class="math display">\[\widehat{\theta}_{c}=\left(\overline{X}^{\prime}
+\overline{Z}_{c}\left(\overline{Z}_{c}^{\prime}
+\overline{Z}_{c}\right)^{-1} \overline{Z}_{c}^{\prime}
+\overline{X}\right)^{-1}\left(\overline{X}^{\prime}
+\overline{Z}_{c}\left(\overline{Z}_{c}^{\prime}
+\overline{Z}_{c}\right)^{-1} \overline{Z}_{c}^{\prime}
+y\right)\]</span></p>
+<p>with <span class="math inline">\(\overline{Z_{c}}= [X,
+Z_{c}]\)</span>.</p>
+<p>A model averaging estimator of the unknown (1 + <span class="math inline">\(K_{1}\)</span>) × 1 vector <span class="math inline">\(\theta\)</span> is</p>
+<p><span class="math display">\[\widehat{\theta}(\omega)=\sum_{c \in C}
+\omega_{c} \widehat{\theta}_{c}.\]</span></p>
+<p>In terms of weight selection, we consider Smoothed Akaike information
+criterion(SAIC) whose empirical weight is computed as <span class="math display">\[\widehat{\omega}_{AIC,k}=\frac{\exp
+\left(-\frac{1}{2} AIC_{k}\right)}{\sum\limits_{j=1}^{K} \exp
+\left(-\frac{1}{2} AIC_{j}\right)}, \quad k=1,\ldots,K \]</span></p>
+<p>Moreover, in this context, we can express AIC as <span class="math display">\[2p+T\cdot
+log\left(\frac{\sum\limits_{i=1}^{T}\left(y_{i}-\widehat{\overline{X}}_{i}
+\widehat{\theta}_{c}\right)^{2}}{T}\right)\]</span> where <span class="math inline">\(T\)</span> is the number of observed values, <span class="math inline">\(p\)</span> is the number of parameters in the
+candidate model.</p>
+<p>The first function is choosing several variables from m variables for
+different submodels but just the first k of them must be in all
+submodels.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>choose_variable <span class="ot">&lt;-</span> <span class="cf">function</span>(k, m){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  q <span class="ot">&lt;-</span> m <span class="sc">-</span> k</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  M <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">**</span>q</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  pp <span class="ot">&lt;-</span> <span class="fu">numeric</span>(q<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(q<span class="sc">+</span><span class="dv">1</span>)){</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    pp[i] <span class="ot">&lt;-</span> <span class="fu">choose</span>(q, i<span class="dv">-1</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">numeric</span>(M)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  s[<span class="dv">1</span>] <span class="ot">&lt;-</span> k</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(q<span class="sc">+</span><span class="dv">1</span>)){</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    temp <span class="ot">&lt;-</span> <span class="fu">sum</span>(s <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    s[(temp<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span> (temp<span class="sc">+</span>pp[i])] <span class="ot">&lt;-</span> <span class="fu">rep</span>((i<span class="sc">+</span>k<span class="dv">-1</span>), pp[i])</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  S <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow =</span> M, <span class="at">ncol =</span> m)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M) {</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    S[i, <span class="dv">1</span><span class="sc">:</span>k] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>k</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  tS <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>q) {</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    Temp <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">combn</span>((k<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>m, i))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    S[(tS<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(tS<span class="sc">+</span><span class="fu">nrow</span>(Temp)),(k<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span> (k<span class="sc">+</span>i)] <span class="ot">&lt;-</span> Temp</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    tS <span class="ot">&lt;-</span> tS <span class="sc">+</span> <span class="fu">nrow</span>(Temp)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  output <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">s=</span>s, <span class="at">S=</span>S)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(output)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">choose_variable</span>(<span class="dv">2</span>,<span class="dv">8</span>)</span></code></pre></div>
+<pre><code>## $s
+##  [1] 2 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+## [39] 5 5 5 5 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 7 7 7 7 7 7 8
+## 
+## $S
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+##  [1,]    1    2   NA   NA   NA   NA   NA   NA
+##  [2,]    1    2    3   NA   NA   NA   NA   NA
+##  [3,]    1    2    4   NA   NA   NA   NA   NA
+##  [4,]    1    2    5   NA   NA   NA   NA   NA
+##  [5,]    1    2    6   NA   NA   NA   NA   NA
+##  [6,]    1    2    7   NA   NA   NA   NA   NA
+##  [7,]    1    2    8   NA   NA   NA   NA   NA
+##  [8,]    1    2    3    4   NA   NA   NA   NA
+##  [9,]    1    2    3    5   NA   NA   NA   NA
+## [10,]    1    2    3    6   NA   NA   NA   NA
+## [11,]    1    2    3    7   NA   NA   NA   NA
+## [12,]    1    2    3    8   NA   NA   NA   NA
+## [13,]    1    2    4    5   NA   NA   NA   NA
+## [14,]    1    2    4    6   NA   NA   NA   NA
+## [15,]    1    2    4    7   NA   NA   NA   NA
+## [16,]    1    2    4    8   NA   NA   NA   NA
+## [17,]    1    2    5    6   NA   NA   NA   NA
+## [18,]    1    2    5    7   NA   NA   NA   NA
+## [19,]    1    2    5    8   NA   NA   NA   NA
+## [20,]    1    2    6    7   NA   NA   NA   NA
+## [21,]    1    2    6    8   NA   NA   NA   NA
+## [22,]    1    2    7    8   NA   NA   NA   NA
+## [23,]    1    2    3    4    5   NA   NA   NA
+## [24,]    1    2    3    4    6   NA   NA   NA
+## [25,]    1    2    3    4    7   NA   NA   NA
+## [26,]    1    2    3    4    8   NA   NA   NA
+## [27,]    1    2    3    5    6   NA   NA   NA
+## [28,]    1    2    3    5    7   NA   NA   NA
+## [29,]    1    2    3    5    8   NA   NA   NA
+## [30,]    1    2    3    6    7   NA   NA   NA
+## [31,]    1    2    3    6    8   NA   NA   NA
+## [32,]    1    2    3    7    8   NA   NA   NA
+## [33,]    1    2    4    5    6   NA   NA   NA
+## [34,]    1    2    4    5    7   NA   NA   NA
+## [35,]    1    2    4    5    8   NA   NA   NA
+## [36,]    1    2    4    6    7   NA   NA   NA
+## [37,]    1    2    4    6    8   NA   NA   NA
+## [38,]    1    2    4    7    8   NA   NA   NA
+## [39,]    1    2    5    6    7   NA   NA   NA
+## [40,]    1    2    5    6    8   NA   NA   NA
+## [41,]    1    2    5    7    8   NA   NA   NA
+## [42,]    1    2    6    7    8   NA   NA   NA
+## [43,]    1    2    3    4    5    6   NA   NA
+## [44,]    1    2    3    4    5    7   NA   NA
+## [45,]    1    2    3    4    5    8   NA   NA
+## [46,]    1    2    3    4    6    7   NA   NA
+## [47,]    1    2    3    4    6    8   NA   NA
+## [48,]    1    2    3    4    7    8   NA   NA
+## [49,]    1    2    3    5    6    7   NA   NA
+## [50,]    1    2    3    5    6    8   NA   NA
+## [51,]    1    2    3    5    7    8   NA   NA
+## [52,]    1    2    3    6    7    8   NA   NA
+## [53,]    1    2    4    5    6    7   NA   NA
+## [54,]    1    2    4    5    6    8   NA   NA
+## [55,]    1    2    4    5    7    8   NA   NA
+## [56,]    1    2    4    6    7    8   NA   NA
+## [57,]    1    2    5    6    7    8   NA   NA
+## [58,]    1    2    3    4    5    6    7   NA
+## [59,]    1    2    3    4    5    6    8   NA
+## [60,]    1    2    3    4    5    7    8   NA
+## [61,]    1    2    3    4    6    7    8   NA
+## [62,]    1    2    3    5    6    7    8   NA
+## [63,]    1    2    4    5    6    7    8   NA
+## [64,]    1    2    3    4    5    6    7    8</code></pre>
+<p>The second function reports results of a simple Monte Carlo study
+assessing the finite sample properties of the proposed model averaging
+estimator using SAIC based on the two-stage least squares(TSLS).</p>
+<p>The data generating process is <span class="math display">\[\left\{
+\begin{array}{lr}
+y_{i}=\beta_{0}Y_{i}+\varepsilon_{i}&amp;\\
+Y_{i}=\pi^{\prime}Z_{i}+u_{i}+\eta_{i},
+\end{array}
+\right.\]</span> where the true parameter of interest is the scalar
+<span class="math inline">\(β_{0}\)</span>, which is fixed at 0.1. <span class="math inline">\(Y_{i}\)</span> and <span class="math inline">\(X_{i}\)</span> are scalars, with <span class="math inline">\(X_{i}=v_{i}+\eta_{i}\)</span>, <span class="math inline">\(v_{i}\)</span> and <span class="math inline">\(\eta_{i}\)</span> being independently distributed
+N(0, 1) random variables.Furthermore, <span class="math display">\[(\varepsilon_{i},u_{i},Z_{i}^{\prime})^{\prime}\overset{i.i.d}\sim
+N(0,\Sigma),\quad \mbox{where}\quad \Sigma=\left(
+\begin{array}{ccc}
+          1&amp; 0.5&amp; 0_{1 \times M } \\
+          0.5&amp; 1&amp; 0_{1 \times M } \\
+          0_{M \times 1}&amp; 0_{M \times 1} &amp; I_{M}
+\end{array}
+\right).\]</span></p>
+<p>We set the maximum number of instruments <span class="math inline">\(M\)</span> to 10 and 20 and allow for different
+combinations of instruments. We also fix a block of moment conditions
+(<span class="math inline">\(M_{fixed}\)</span>).For each replication,
+we select the instruments for the fixed block that maximize the
+correlation with the endogenous regressor <span class="math inline">\(Y_{i}\)</span>, while using all possible
+combinations of the remaining instruments.</p>
+<p>In terms of specifications for <span class="math inline">\(\pi\)</span>, we have <span class="math display">\[\pi_{j}=c(M)\left(1-\frac{j}{M+1}\right)^{4},\quad
+j=1,2,\ldots,M,\]</span> where <span class="math inline">\(c(M)\)</span>
+is set so that <span class="math inline">\(\pi\)</span> satisfies <span class="math inline">\(\pi^{\prime}
+\pi=R_{f}^{2}/\left(1-R_{f}^{2}\right)\)</span>, where<span class="math inline">\(R_{f}^2=0.1\)</span>.</p>
+<p>G is the number of replications. T is the number of observations. For
+each replication, we can obtain a value for <span class="math inline">\(\hat{\theta}\)</span>. Based on these estimated
+values, we compute the median bias (MB) and the median absolute
+deviation (MAD), as well as the inter-decile range (IDR, the difference
+between the 10% and 90% deciles), which are the results of the second
+function.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>TSLS_SAIC <span class="ot">&lt;-</span> <span class="cf">function</span>(G, T, M, Mfixed){</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">**</span>(M <span class="sc">-</span> Mfixed)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  beta <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  Rf2 <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  pi <span class="ot">&lt;-</span> <span class="fu">numeric</span>(M)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  ehat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, T, C<span class="dv">-1</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  thetahatc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(C<span class="dv">-1</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  AICc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(C<span class="dv">-1</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  expc <span class="ot">&lt;-</span> <span class="fu">numeric</span>(C<span class="dv">-1</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  thetahat <span class="ot">&lt;-</span> <span class="fu">numeric</span>(G)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">choose_variable</span>(Mfixed,M)<span class="sc">$</span>s</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  S <span class="ot">&lt;-</span> <span class="fu">choose_variable</span>(Mfixed,M)<span class="sc">$</span>S</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  sumM <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M) {</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    sumM <span class="ot">&lt;-</span> sumM <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>i<span class="sc">/</span>(M<span class="sc">+</span><span class="dv">1</span>))<span class="sc">**</span><span class="dv">8</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  cM <span class="ot">&lt;-</span> (Rf2<span class="sc">/</span>(<span class="dv">1</span><span class="sc">-</span>Rf2)<span class="sc">/</span>sumM)<span class="sc">**</span><span class="fl">0.5</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>M) {</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    pi[i] <span class="ot">&lt;-</span> cM<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>i<span class="sc">/</span>(M<span class="sc">+</span><span class="dv">1</span>))<span class="sc">**</span><span class="dv">4</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (g <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>G) {</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    Ome <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="dv">1</span>), <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    eu <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(T, mu, Ome)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    e <span class="ot">&lt;-</span> eu[,<span class="dv">1</span>]</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    u <span class="ot">&lt;-</span> eu[,<span class="dv">2</span>]</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    veta <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(T, mu, <span class="fu">diag</span>(<span class="dv">2</span>))</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    v <span class="ot">&lt;-</span> veta[,<span class="dv">1</span>]</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    eta <span class="ot">&lt;-</span> veta[,<span class="dv">2</span>]</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    Z <span class="ot">&lt;-</span> <span class="fu">mvrnorm</span>(T, <span class="fu">numeric</span>(M), <span class="fu">diag</span>(M))</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    X <span class="ot">&lt;-</span> v <span class="sc">+</span> eta</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    Y <span class="ot">&lt;-</span> Z <span class="sc">%*%</span> pi <span class="sc">+</span> u <span class="sc">+</span> eta</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> beta <span class="sc">*</span> Y <span class="sc">+</span> e</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    batX <span class="ot">&lt;-</span> Y</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (c <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>C) {</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>      pc <span class="ot">&lt;-</span> s[c]</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>      a <span class="ot">&lt;-</span> S[c, <span class="dv">1</span><span class="sc">:</span>pc]</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      Zc <span class="ot">&lt;-</span> Z[, a]</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>      PZc <span class="ot">&lt;-</span> Zc <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(Zc) <span class="sc">%*%</span> Zc) <span class="sc">%*%</span> <span class="fu">t</span>(Zc)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>      PZcX <span class="ot">&lt;-</span> PZc <span class="sc">%*%</span> batX</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>      thetahatc[c<span class="dv">-1</span>] <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(batX) <span class="sc">%*%</span> PZcX) <span class="sc">%*%</span> <span class="fu">t</span>(PZcX) <span class="sc">%*%</span> y</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>      ehat[, c<span class="dv">-1</span>]<span class="ot">&lt;-</span> y <span class="sc">-</span> PZcX <span class="sc">%*%</span> thetahatc[c<span class="dv">-1</span>]</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>      RSSc <span class="ot">&lt;-</span> <span class="fu">t</span>(ehat[, c<span class="dv">-1</span>]) <span class="sc">%*%</span> ehat[, c<span class="dv">-1</span>]</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>      qc <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">+</span> <span class="fu">length</span>(a)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>      AICc[c<span class="dv">-1</span>] <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> qc <span class="sc">+</span> T <span class="sc">*</span> <span class="fu">log</span>(RSSc<span class="sc">/</span>T)</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>      expc[c<span class="dv">-1</span>] <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>AICc[(c<span class="dv">-1</span>)]<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    sumexp <span class="ot">&lt;-</span> <span class="fu">sum</span>(expc)</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    omega <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>AICc<span class="sc">/</span><span class="dv">2</span>)<span class="sc">/</span>sumexp</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    thetahat[g] <span class="ot">&lt;-</span> <span class="fu">t</span>(omega) <span class="sc">%*%</span> thetahatc</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>  MAD <span class="ot">&lt;-</span> <span class="fu">median</span>(<span class="fu">abs</span>(thetahat<span class="fl">-0.1</span>))</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>  MB <span class="ot">&lt;-</span> <span class="fu">median</span>(thetahat<span class="fl">-0.1</span>)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>  IDR <span class="ot">=</span> <span class="fu">sort</span>(thetahat)[<span class="fu">round</span>(<span class="fu">length</span>(thetahat)<span class="sc">*</span><span class="fl">0.9</span>)]<span class="sc">-</span><span class="fu">sort</span>(thetahat)[<span class="fu">round</span>(<span class="fu">length</span>(thetahat)<span class="sc">*</span><span class="fl">0.1</span>)]</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">c</span>(MAD,MB,IDR))</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="fu">TSLS_SAIC</span>(<span class="dv">500</span>, <span class="dv">100</span>, <span class="dv">10</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## [1] 0.2118339 0.1537085 0.6860168</code></pre>
+<p>We also give an example of the function to assess the finite sample
+properties of the proposed model averaging estimator using Smoothed
+Akaike information criterion(SAIC) based on the two-stage least
+squares(TSLS). We can set different values of G, T, M, Mfixed to compare
+the results.</p>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

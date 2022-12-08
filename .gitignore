@@ -1,0 +1,6 @@
+/doc/
+/Meta/
+.Rproj.user
+src/gibbsC.o
+src/RcppExports.o
+src/StatComp22090.dll
